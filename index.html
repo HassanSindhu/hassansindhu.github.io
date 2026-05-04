@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hassan Iqbal | Mobile App Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07111f;
+      --card: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.14);
+      --text: #f8fafc;
+      --muted: #aeb9cb;
+      --primary: #38bdf8;
+      --secondary: #8b5cf6;
+      --accent: #22c55e;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.24), transparent 32%),
+        radial-gradient(circle at 80% 15%, rgba(139, 92, 246, 0.22), transparent 30%),
+        linear-gradient(135deg, #07111f 0%, #101827 50%, #050816 100%);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(7, 17, 31, 0.74);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-inner {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      font-size: 1.15rem;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.28);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .hero {
+      padding: 92px 0 70px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .badge {
+      width: fit-content;
+      padding: 10px 14px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 999px;
+      color: #d7f3ff;
+      background: rgba(56, 189, 248, 0.11);
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.8rem);
+      line-height: 0.96;
+      letter-spacing: -0.08em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      display: block;
+      background: linear-gradient(135deg, #38bdf8, #a78bfa, #22c55e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 660px;
+      color: var(--muted);
+      font-size: 1.12rem;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 38px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      padding: 0 22px;
+      border-radius: 16px;
+      font-weight: 800;
+      border: 1px solid transparent;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      box-shadow: 0 18px 42px rgba(56, 189, 248, 0.23);
+    }
+
+    .btn-outline {
+      border-color: rgba(255, 255, 255, 0.18);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      max-width: 650px;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 20px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.7rem;
+      letter-spacing: -0.04em;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .profile-card {
+      position: relative;
+      padding: 28px;
+      border: 1px solid var(--card-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.05));
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.28), transparent 38%);
+      pointer-events: none;
+    }
+
+    .avatar {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      border-radius: 40px;
+      background: linear-gradient(135deg, #38bdf8, #8b5cf6);
+      display: grid;
+      place-items: center;
+      font-size: 4rem;
+      font-weight: 900;
+      margin-bottom: 28px;
+      box-shadow: 0 22px 50px rgba(139, 92, 246, 0.28);
+    }
+
+    .profile-card h2 {
+      position: relative;
+      font-size: 2rem;
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+
+    .profile-card .role {
+      position: relative;
+      color: var(--primary);
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+
+    .info-list {
+      position: relative;
+      display: grid;
+      gap: 13px;
+    }
+
+    .info-list div {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--muted);
+      font-size: 0.95rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    section {
+      padding: 74px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 30px;
+      margin-bottom: 34px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      letter-spacing: -0.07em;
+    }
+
+    .section-head p {
+      max-width: 540px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .skill-card, .experience-card, .project-card, .education-card {
+      padding: 24px;
+      border-radius: 26px;
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      box-shadow: 0 18px 60px rgba(0,0,0,0.16);
+    }
+
+    .skill-card h3, .experience-card h3, .project-card h3, .education-card h3 {
+      font-size: 1.14rem;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .skill-card p, .experience-card p, .project-card p, .education-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .chip-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .chip {
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.1);
+      color: #c7efff;
+      border: 1px solid rgba(56, 189, 248, 0.22);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+    }
+
+    .experience-card {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .meta {
+      color: var(--primary);
+      font-weight: 800;
+      line-height: 1.6;
+    }
+
+    .experience-card ul {
+      color: var(--muted);
+      padding-left: 18px;
+      line-height: 1.75;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+    }
+
+    .project-card.featured {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.16), rgba(139, 92, 246, 0.14));
+    }
+
+    .cta {
+      text-align: center;
+      padding: 58px 28px;
+      border-radius: 36px;
+      border: 1px solid var(--card-border);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(34, 197, 94, 0.18), transparent 36%),
+        rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      letter-spacing: -0.07em;
+      margin-bottom: 14px;
+    }
+
+    .cta p {
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 680px;
+      margin: 0 auto 28px;
+    }
+
+    footer {
+      padding: 38px 0 48px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero, .experience-card, .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-3, .quick-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">
+        <span class="brand-mark">HI</span>
+        Hassan Iqbal
+      </a>
+      <div class="nav-links">
+        <a href="#skills">Skills</a>
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="home" class="container hero">
+    <div>
+      <div class="badge">Mobile App Developer • Android • React Native • Firebase • AI/ML</div>
+      <h1>Building clean, scalable <span>mobile experiences.</span></h1>
+      <p>
+        I am a versatile mobile application developer with 4+ years of experience in native Android, Kotlin/Java,
+        RESTful API integrations, Firebase services, and production-grade government and international client projects.
+        I also work with AI-powered mobile app concepts including computer vision, smart automation, ML model integration,
+        AI assistants, image analysis, and intelligent user experiences.
+      </p>
+      <div class="actions">
+        <a class="btn btn-primary" href="mailto:hassanjutt7437@gmail.com">Hire Me</a>
+        <a class="btn btn-outline" href="https://www.linkedin.com/in/thehassaniqbal/" target="_blank" rel="noreferrer">View LinkedIn</a>
+        <a class="btn btn-outline" href="tel:+923057437286">Call Now</a>
+      </div>
+      <div class="quick-stats">
+        <div class="stat"><strong>4+</strong><span>Years Experience</span></div>
+        <div class="stat"><strong>AI</strong><span>Mobile App Concepts</span></div>
+        <div class="stat"><strong>B2</strong><span>English Proficiency</span></div>
+      </div>
+    </div>
+
+    <aside class="profile-card">
+      <div class="avatar">HI</div>
+      <h2>Hassan Iqbal</h2>
+      <div class="role">Mobile App Developer</div>
+      <div class="info-list">
+        <div>📍 Faisalabad, Pakistan</div>
+        <div>📧 hassanjutt7437@gmail.com</div>
+        <div>📞 (+92) 305 7437286</div>
+        <div>🔗 linkedin.com/in/thehassaniqbal</div>
+      </div>
+    </aside>
+  </main>
+
+  <section id="skills" class="container">
+    <div class="section-head">
+      <h2>Technical Expertise</h2>
+      <p>A strong mobile-first stack covering native Android, cross-platform development, APIs, Firebase, backend integration, and AI/ML foundations.</p>
+    </div>
+    <div class="grid-3">
+      <div class="skill-card">
+        <h3>Mobile Development</h3>
+        <p>Production-ready Android applications with modern UI, app lifecycle handling, architecture patterns, and clean implementation.</p>
+        <div class="chip-wrap">
+          <span class="chip">Kotlin</span><span class="chip">Java</span><span class="chip">Android SDK</span><span class="chip">MVVM</span><span class="chip">MVP</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Cross-Platform & UI</h3>
+        <p>Growing expertise in React Native and Expo with strong ability to implement polished screens from Figma designs.</p>
+        <div class="chip-wrap">
+          <span class="chip">React Native</span><span class="chip">Expo</span><span class="chip">Material Design</span><span class="chip">Figma</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Backend & Data</h3>
+        <p>API integration, Firebase services, local storage, and backend support for mobile application deployments.</p>
+        <div class="chip-wrap">
+          <span class="chip">REST APIs</span><span class="chip">Firebase</span><span class="chip">GraphQL</span><span class="chip">SQLite</span><span class="chip">Laravel</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>AI-Powered Mobile Apps</h3>
+        <p>Ability to design mobile apps that use AI features such as image recognition, smart recommendations, automated summaries, voice-based flows, and chatbot-style assistants.</p>
+        <div class="chip-wrap">
+          <span class="chip">AI Assistants</span><span class="chip">Chatbots</span><span class="chip">Image Analysis</span><span class="chip">Voice AI</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Computer Vision</h3>
+        <p>Hands-on project experience with real-time camera-based detection systems using Python, OpenCV, and ML concepts for practical safety and monitoring use cases.</p>
+        <div class="chip-wrap">
+          <span class="chip">OpenCV</span><span class="chip">Object Detection</span><span class="chip">Camera AI</span><span class="chip">Real-Time Video</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>AI Integration</h3>
+        <p>Experience-oriented understanding of connecting mobile apps with AI APIs, Firebase, backend services, and ML workflows to create intelligent application features.</p>
+        <div class="chip-wrap">
+          <span class="chip">ML APIs</span><span class="chip">Python</span><span class="chip">Model Integration</span><span class="chip">Automation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="container">
+    <div class="section-head">
+      <h2>Experience Timeline</h2>
+      <p>Hands-on experience across government, healthcare, training, remote collaboration, Android engineering, and AI-assisted development.</p>
+    </div>
+    <div class="timeline">
+      <article class="experience-card">
+        <div class="meta">Feb 2025 — Present<br>Punjab Forest Department, Lahore</div>
+        <div>
+          <h3>Assistant Director – Mobile App Developer</h3>
+          <ul>
+            <li>Built mobile apps for national government programs with GIS and geo-tagging features.</li>
+            <li>Integrated RESTful APIs and Firebase Auth, Firestore, and Storage.</li>
+            <li>Developed admin panels and backend APIs supporting mobile deployments.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="experience-card">
+        <div class="meta">Mar 2025 — Jun 2025<br>NavTech Pakistan</div>
+        <div>
+          <h3>Android App Development Trainer</h3>
+          <ul>
+            <li>Trained developers on REST/JSON APIs, Firebase, SQLite, and Android lifecycle concepts.</li>
+            <li>Covered backend integration and cross-platform development fundamentals.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="experience-card">
+        <div class="meta">Mar 2023 — Oct 2024<br>Doconline, Italy</div>
+        <div>
+          <h3>Web & Mobile App Developer</h3>
+          <ul>
+            <li>Developed web and mobile applications remotely for an Italian healthcare company.</li>
+            <li>Integrated third-party APIs and maintained backend services for mobile clients.</li>
+          </ul>
+        </div>
+      </article>
+      <article class="experience-card">
+        <div class="meta">Apr 2022 — Feb 2023<br>Appinators, Islamabad</div>
+        <div>
+          <h3>Android Developer</h3>
+          <ul>
+            <li>Built Android applications using MVVM/MVP architecture and full lifecycle management.</li>
+            <li>Delivered polished UI implementations according to design specifications.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="projects" class="container">
+    <div class="section-head">
+      <h2>Featured Work</h2>
+      <p>Projects that show practical engineering ability, real-world problem solving, and applied AI/ML understanding.</p>
+    </div>
+    <div class="projects-grid">
+      <article class="project-card featured">
+        <h3>Social Distance & Mask Detection Using Camera</h3>
+        <p>
+          A real-time computer vision system built with Python and OpenCV to detect face mask usage and measure social distancing in live video.
+          The project supported public health safety during COVID-19 through automated visual monitoring.
+        </p>
+        <div class="chip-wrap">
+          <span class="chip">Python</span><span class="chip">OpenCV</span><span class="chip">Computer Vision</span><span class="chip">Real-Time Video</span>
+        </div>
+      </article>
+      <article class="education-card">
+        <h3>Education & Certifications</h3>
+        <p><strong>BS Computer Science</strong><br>Government College University Faisalabad<br>Oct 2016 — Dec 2020</p>
+        <br>
+        <p>Machine Learning with Python – Cognitiveclass.ai / IBM<br>Machine Learning & Python Programming – Technet Pakistan</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="section-head">
+      <h2>AI Project Capabilities</h2>
+      <p>Modern AI project directions Hassan can present as part of his mobile development profile.</p>
+    </div>
+    <div class="grid-3">
+      <article class="project-card">
+        <h3>AI Chatbot Mobile Apps</h3>
+        <p>Mobile applications with AI assistant features for customer support, FAQs, learning, business automation, and guided user journeys.</p>
+        <div class="chip-wrap">
+          <span class="chip">Chat UI</span><span class="chip">AI APIs</span><span class="chip">Firebase</span>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>AI Image Analysis Apps</h3>
+        <p>Apps that analyze images from camera or gallery for detection, classification, safety monitoring, inspection, and visual decision support.</p>
+        <div class="chip-wrap">
+          <span class="chip">Image AI</span><span class="chip">Camera</span><span class="chip">OpenCV</span>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>Voice & Speech AI Apps</h3>
+        <p>Concepts for voice-enabled apps including speech-to-text, voice commands, narration, audio processing, and smart voice interaction.</p>
+        <div class="chip-wrap">
+          <span class="chip">Speech AI</span><span class="chip">Voice UX</span><span class="chip">Automation</span>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>AI Summarization Apps</h3>
+        <p>Apps that summarize text, PDFs, reports, articles, and learning content to help users save time and understand information faster.</p>
+        <div class="chip-wrap">
+          <span class="chip">NLP</span><span class="chip">Summaries</span><span class="chip">Productivity</span>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>Smart Recommendation Systems</h3>
+        <p>Personalized mobile experiences using user behavior, saved data, preferences, and intelligent recommendation logic.</p>
+        <div class="chip-wrap">
+          <span class="chip">Personalization</span><span class="chip">Data</span><span class="chip">UX</span>
+        </div>
+      </article>
+      <article class="project-card">
+        <h3>Geo-Tagged AI Monitoring</h3>
+        <p>GIS-based mobile apps with geo-tagging, image proof, location validation, monitoring dashboards, and intelligent field reporting.</p>
+        <div class="chip-wrap">
+          <span class="chip">GIS</span><span class="chip">Geo-Tagging</span><span class="chip">Dashboards</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact" class="container">
+    <div class="cta">
+      <h2>Ready to build your next mobile app?</h2>
+      <p>
+        Available for Android, React Native, Firebase, API integration, GIS/geo-tagging, and AI-assisted mobile application projects.
+      </p>
+      <div class="actions" style="justify-content:center; margin-bottom:0;">
+        <a class="btn btn-primary" href="mailto:hassanjutt7437@gmail.com">Email Hassan</a>
+        <a class="btn btn-outline" href="https://www.linkedin.com/in/thehassaniqbal/" target="_blank" rel="noreferrer">Connect on LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 Hassan Iqbal. Designed as a modern frontend portfolio webpage.
+  </footer>
+</body>
+</html>
