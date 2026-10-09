@@ -23,10 +23,12 @@ document.addEventListener('keydown', event => {
     menuToggle.focus();
   }
 });
-window.matchMedia('(min-width: 601px)').addEventListener('change', closeMenu);
+window.matchMedia('(min-width: 801px)').addEventListener('change', closeMenu);
 
 const filters = document.querySelectorAll('[data-filter]');
 const projects = document.querySelectorAll('.project-card');
+const publishedAppCount = document.querySelectorAll('.published-card').length + document.querySelectorAll('.app-directory-card').length;
+document.querySelectorAll('[data-published-count]').forEach(element => { element.textContent = publishedAppCount; });
 filters.forEach(button => button.addEventListener('click', () => {
   filters.forEach(filter => {
     const active = filter === button;
@@ -40,11 +42,32 @@ filters.forEach(button => button.addEventListener('click', () => {
     if (visible) visibleCount++;
   });
   document.querySelector('.work-count').textContent = `${visibleCount} selected project${visibleCount === 1 ? '' : 's'}`;
+  document.querySelector('.app-directory').hidden = button.dataset.filter === 'ai';
 }));
 
 // Published app features are grounded in their Google Play listings.
 // Client experience and the vision project come from the supplied portfolio.
 const projectDetails = {
+  trees: {
+    category: 'PUBLISHED APP · GIS & TREE SURVEYS',
+    title: 'Punjab Tree Enumeration',
+    intro: 'A mobile survey tool for the Punjab Forest Department, published on Google Play for documenting linear plantations.',
+    context: 'Forestry teams need consistent records for trees along roads, canals, and railway corridors, with location evidence and officer review.',
+    contributions: ['Record tree measurements, condition assessments, and GPS locations in the field.', 'Manage enumeration, afforestation, and pole-crop survey records alongside disposal documentation.', 'Support hierarchical verification and dashboards filtered by division, block, and year.'],
+    tools: ['Android', 'GPS mapping', 'Field surveys', 'Verification workflows'],
+    store: 'https://play.google.com/store/apps/details?id=com.treeenum&hl=en&gl=PK',
+    screenshots: ['assets/apps/trees-screen-1.png', 'assets/apps/trees-screen-2.png', 'assets/apps/trees-screen-3.png']
+  },
+  plantation: {
+    category: 'PUBLISHED APP · PLANTATION & GROWTH',
+    title: 'Pakistan Plantation App (PPMS)',
+    intro: 'A published plantation and growth monitoring application for public users and government departments.',
+    context: 'Connecting planting activity with location evidence and later growth observations creates a clearer record of plantation progress.',
+    contributions: ['Record plantation sites, species, counts, GPS coordinates, and photo evidence.', 'Access plantation records through QR codes and review previous activities.', 'Submit growth follow-ups with survival rates, plant height, notes, and photos.'],
+    tools: ['Android', 'Geo-tagging', 'QR workflows', 'Growth monitoring'],
+    store: 'https://play.google.com/store/apps/details?id=com.pakistanafforestationsystem&hl=en&gl=PK',
+    screenshots: ['assets/apps/plantation-screen-1.png', 'assets/apps/plantation-screen-2.png', 'assets/apps/plantation-screen-3.png']
+  },
   plant: {
     category: 'PUBLISHED APP · APPLIED AI',
     title: 'CM AI Plant Doctor',
@@ -106,8 +129,11 @@ const projectDetails = {
 };
 
 const dialog = document.querySelector('.project-dialog');
-document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => {
-  const project = projectDetails[button.dataset.project];
+let dialogTrigger;
+function openProject(projectKey, trigger) {
+  const project = projectDetails[projectKey];
+  if (!project) return;
+  dialogTrigger = trigger;
   document.querySelector('#dialog-category').textContent = project.category;
   document.querySelector('#dialog-title').textContent = project.title;
   document.querySelector('#dialog-intro').textContent = project.intro;
@@ -173,13 +199,17 @@ document.querySelectorAll('[data-project]').forEach(button => button.addEventLis
   dialog.showModal();
   dialog.scrollTop = 0;
   document.body.classList.add('modal-open');
-}));
+}
+document.querySelectorAll('[data-project]').forEach(button => button.addEventListener('click', () => openProject(button.dataset.project, button)));
 document.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
 dialog.addEventListener('click', event => {
   const bounds = dialog.getBoundingClientRect();
   if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
 });
-dialog.addEventListener('close', () => document.body.classList.remove('modal-open'));
+dialog.addEventListener('close', () => {
+  document.body.classList.remove('modal-open');
+  dialogTrigger?.focus({ preventScroll: true });
+});
 
 let copyTimeout;
 document.querySelector('.copy-email').addEventListener('click', async () => {
